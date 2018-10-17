@@ -4,28 +4,47 @@ import "./App.css";
 import actions from "./actions";
 import "typeface-roboto";
 import { Border } from "./border.js";
-import { FormGroup, Input, Label, Button } from "reactstrap";
+import {
+  FormGroup,
+  Input,
+  Label,
+  Button,
+  Form,
+  FormText,
+  InputGroup,
+  InputGroupAddon
+} from "reactstrap";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { tila: "1" };
+    this.state = {
+      tila: "1",
+      searchText: "",
+      battleTag: "Oageoni#2192"
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
+    this.handleSearch = this.handleSearch.bind(this);
   }
   handleChange(event) {
     this.setState({
-      tila: event.target.value
+      [event.target.name]: event.target.value
     });
+  }
+  handleSearch(event) {
+    this.props.dvaStats(this.state.battleTag);
+    this.props.owStats(this.state.battleTag);
   }
   handleClick(tila) {
     this.setState({
       tila: tila
     });
   }
+
   componentDidMount() {
-    this.props.owStats();
-    this.props.dvaStats();
+    this.props.owStats(this.state.battleTag);
+    this.props.dvaStats(this.state.battleTag);
   }
 
   sortWithKey(chars, key, asc = true) {
@@ -57,7 +76,7 @@ class App extends React.Component {
       });
       console.log(award); */
       let chars = [];
-      if (dvaStat.competitiveStats) {
+      if (dvaStat.competitiveStats && dvaStat.competitiveStats.topHeroes) {
         Object.keys(dvaStat.competitiveStats.topHeroes).forEach(charName => {
           chars.push({
             name: charName,
@@ -91,6 +110,27 @@ class App extends React.Component {
                 {name} <br />
                 {level}
               </p>
+              <div
+                style={{
+                  position: "absolute",
+                  float: "left",
+                  alligment: "center",
+                  paddingLeft: "500px",
+                  paddingTop: "40px"
+                }}
+              >
+                <InputGroup>
+                  <Input
+                    name="battleTag"
+                    placeholder="Ex. battletag-1234"
+                    value={this.state.battleTag}
+                    onChange={this.handleChange}
+                  />
+                  <InputGroupAddon addonType="prepend">
+                    <Button onClick={this.handleSearch}>Search</Button>
+                  </InputGroupAddon>
+                </InputGroup>
+              </div>
               <Border
                 width="100"
                 height="100"
@@ -128,10 +168,11 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-       {/*      <div>
+            {/*      <div>
               <FormGroup>
                 <Label for="Sort by">Sort by...</Label>
                 <Input
+                  name="tila"
                   type="select"
                   value={this.state.tila}
                   onChange={this.handleChange}
@@ -161,29 +202,59 @@ class App extends React.Component {
                   <tr>
                     <th>
                       <Button onClick={e => this.handleClick("name")}>
-                        Name
+                        Hero
                       </Button>
                     </th>
                     <th>
-                      <Button onClick={e => this.handleClick("win precentage")}>Win precentage</Button></th>
+                      <Button onClick={e => this.handleClick("win precentage")}>
+                        Win precentage
+                      </Button>
+                    </th>
                     <th>
-                      <Button onClick={e => this.handleClick("games won")}>Games won</Button></th>
-                    <th><Button onClick={e => this.handleClick("time played")}>Time played</Button></th>
-                    <th><Button onClick={e => this.handleClick("eliminations per life")}>Eliminations per life</Button></th>
-                    <th><Button onClick={e => this.handleClick("weapon accuracy")}>Weapon accuracy</Button></th>
+                      <Button onClick={e => this.handleClick("games won")}>
+                        Games won
+                      </Button>
+                    </th>
+                    <th>
+                      <Button onClick={e => this.handleClick("time played")}>
+                        Time played
+                      </Button>
+                    </th>
+                    <th>
+                      <Button
+                        onClick={e => this.handleClick("eliminations per life")}
+                      >
+                        Eliminations per life
+                      </Button>
+                    </th>
+                    <th>
+                      <Button
+                        onClick={e => this.handleClick("weapon accuracy")}
+                      >
+                        Weapon accuracy (%)
+                      </Button>
+                    </th>
                   </tr>
                 </thead>
 
-                <tbody >
+                <tbody>
                   {chars.map((char, index) => {
                     return (
-                      <tr key={index} >
-                        <td >{char.name}</td>
-                        <td>{char.winPercentage}</td>
-                        <td>{char.gamesWon}</td>
-                        <td>{char.timePlayed}</td>
-                        <td>{char.eliminationsPerLife}</td>
-                        <td>{char.weaponAccuracy}</td>
+                      <tr key={index}>
+                        <td style={{ textAlign: "center" }}>{char.name}</td>
+                        <td style={{ textAlign: "center" }}>
+                          {char.winPercentage}
+                        </td>
+                        <td style={{ textAlign: "center" }}>{char.gamesWon}</td>
+                        <td style={{ textAlign: "center" }}>
+                          {char.timePlayed}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {char.eliminationsPerLife}
+                        </td>
+                        <td style={{ textAlign: "center" }}>
+                          {char.weaponAccuracy}
+                        </td>
                       </tr>
                     );
                   })}

@@ -1,8 +1,13 @@
 import { ACTION_TYPES as TYPES } from "../reducers/appReducer";
+import { searchText } from "../App.js";
 
-export const owStats = () => distpatch => {
+const fixTag = battleTag => {
+  return battleTag.replace("#", "-");
+};
+
+export const owStats = (battleTag) => distpatch => {
   distpatch({ type: TYPES.LOADING });
-  return fetch("https://ow-api.com/v1/stats/pc/eu/Oageoni-2192/profile")
+  return fetch("https://ow-api.com/v1/stats/pc/eu/"+fixTag(battleTag)+"/profile")
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject("http error" + response.status);
@@ -19,18 +24,21 @@ export const owStats = () => distpatch => {
     });
 };
 
-export const dvaStats = () => distpatch => {
+export const dvaStats = battleTag => distpatch => {
   distpatch({ type: TYPES.LOADING });
-  return fetch("https://ow-api.com/v1/stats/pc/eu/Oageoni-2192/heroes/dVa,moira,solider76,zenyatta,mercy,reinhardt,solider76,orisa,ana")
+  return fetch(
+    "https://ow-api.com/v1/stats/pc/eu/" +
+      fixTag(battleTag) +
+      "/heroes/ana,bastion,dVa,genji,hanzo,junkrat,lúcio,mccree,mei,mercy,orisa,pharah,reaper,reinhardt,roadhog,soldier76,sombra,symmetra,torbjörn,tracer,widowmaker,winston,zarya,zenyatta"
+  )
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject("http error" + response.status);
       } else {
         return response.json();
-        
       }
     })
-    
+
     .then(json => {
       distpatch({ type: TYPES.DVA_STATS, value: json });
     })
