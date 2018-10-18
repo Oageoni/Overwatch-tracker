@@ -15,26 +15,42 @@ import {
   InputGroupAddon
 } from "reactstrap";
 
+
 class App extends React.Component {
+  
   constructor(props) {
     super(props);
     this.state = {
       tila: "1",
       searchText: "",
-      battleTag: "Oageoni#2192"
+      battleTag: props.battleTag || "Oageoni#2192",
+      battleTagInput: props.battleTag || "Oageoni#2192"
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
   }
+  static getDerivedStateFromProps(props, state) {
+    if (state.battleTag !== props.battleTag) {
+      props.dvaStats(props.battleTag);
+      props.owStats(props.battleTag);
+      return {
+        battleTag: props.battleTag,
+        battleTagInput: props.battleTag
+      };
+    } else {
+      return null;
+    }
+  }
+  
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
     });
   }
   handleSearch(event) {
-    this.props.dvaStats(this.state.battleTag);
-    this.props.owStats(this.state.battleTag);
+    this.props.dvaStats(this.state.battleTagInput);
+    this.props.owStats(this.state.battleTagInput);
   }
   handleClick(tila) {
     this.setState({
@@ -53,9 +69,11 @@ class App extends React.Component {
       if (a[key] > b[key]) return asc ? 1 : -1;
     });
   }
+
+
   render() {
     const { owStat, dvaStat } = this.props;
-
+    
     if (!owStat || !dvaStat) {
       return null;
     } else {
@@ -84,17 +102,19 @@ class App extends React.Component {
           });
         });
       }
+
       this.sortWithKey(chars, this.state.tila);
       return (
         <div className="background">
           <div className="App">
+          
             <div className="header">
               <img
                 src={icon}
                 alt="icon"
                 style={{ height: "100px", float: "left", margin: "1px" }}
               />
-
+     
               <p
                 style={{
                   fontSize: "25px",
@@ -104,7 +124,7 @@ class App extends React.Component {
                   aligment: "left",
                   color: "white",
                   float: "left",
-                  textShadow: "2px 2px 4px #000000"
+                  textShadow: "2px 2px 4px #000000",
                 }}
               >
                 {name} <br />
@@ -115,30 +135,32 @@ class App extends React.Component {
                   position: "absolute",
                   float: "left",
                   alligment: "center",
-                  paddingLeft: "500px",
-                  paddingTop: "40px"
+                  paddingLeft: "19px",
+                  paddingTop: "15px"
                 }}
               >
+               <Border
+                width="100"
+                height="100"
+                image1={levelIcon}
+                image2={prestigeIcon}
+                style={{ float: "left", zIndex: "-1", alligment:"left", marginTop: "2px"}}
+              />
+
                 <InputGroup>
                   <Input
-                    name="battleTag"
+                    name="battleTagInput"
                     placeholder="Ex. battletag-1234"
-                    value={this.state.battleTag}
+                    value={this.state.battleTagInput}
                     onChange={this.handleChange}
                   />
                   <InputGroupAddon addonType="prepend">
                     <Button onClick={this.handleSearch}>Search</Button>
                   </InputGroupAddon>
                 </InputGroup>
+                
               </div>
-              <Border
-                width="100"
-                height="100"
-                image1={levelIcon}
-                image2={prestigeIcon}
-                style={{ float: "left", zIndex: "-1" }}
-              />
-
+             
               <img
                 src={ratingIcon}
                 style={{ height: "100px", float: "left" }}
@@ -271,7 +293,8 @@ class App extends React.Component {
 function mapStateToProps(state) {
   return {
     owStat: state.app.owStat,
-    dvaStat: state.app.dvaStat
+    dvaStat: state.app.dvaStat,
+    battleTag: state.app.battleTag
   };
 }
 

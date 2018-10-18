@@ -4,16 +4,16 @@ export const ACTION_TYPES = Object.freeze({
   OW_STATS: "OW_STATS",
   DVA_STATS: "DVA_STATS",
   APPLICATION_ERROR: "APPLICATION_ERROR",
-  LOADING: "LOADING"
+  LOADING: "LOADING",
+  SET_BATTLETAG: "SET_BATTLETAG"
 });
 
 export default (
   state = {
     isFetching: true,
-    
+    battleTag: "",
     owStat: null,
-    dvaStat: null,
-    
+    dvaStat: null
   },
   { type, value, isLoading, error }
 ) => {
@@ -41,7 +41,10 @@ export default (
         isLoading: true,
         error: null
       });
-
+    case ACTION_TYPES.SET_BATTLETAG:
+      return Object.assign({}, state, {
+        battleTag: value
+      });
     default:
       return state;
   }

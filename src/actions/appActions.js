@@ -5,9 +5,12 @@ const fixTag = battleTag => {
   return battleTag.replace("#", "-");
 };
 
-export const owStats = (battleTag) => distpatch => {
+export const owStats = battleTag => distpatch => {
   distpatch({ type: TYPES.LOADING });
-  return fetch("https://ow-api.com/v1/stats/pc/eu/"+fixTag(battleTag)+"/profile")
+  distpatch({ type: TYPES.SET_BATTLETAG, value: battleTag });
+  return fetch(
+    "https://ow-api.com/v1/stats/pc/eu/" + fixTag(battleTag) + "/profile"
+  )
     .then(response => {
       if (response.status !== 200) {
         return Promise.reject("http error" + response.status);
