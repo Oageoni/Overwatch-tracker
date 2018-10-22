@@ -15,9 +15,7 @@ import {
   InputGroupAddon
 } from "reactstrap";
 
-
 class App extends React.Component {
-  
   constructor(props) {
     super(props);
     this.state = {
@@ -42,7 +40,7 @@ class App extends React.Component {
       return null;
     }
   }
-  
+
   handleChange(event) {
     this.setState({
       [event.target.name]: event.target.value
@@ -70,10 +68,9 @@ class App extends React.Component {
     });
   }
 
-
   render() {
     const { owStat, dvaStat } = this.props;
-    
+
     if (!owStat || !dvaStat) {
       return null;
     } else {
@@ -107,64 +104,98 @@ class App extends React.Component {
       return (
         <div className="background">
           <div className="App">
-          
             <div className="header">
-              <img
-                src={icon}
-                alt="icon"
-                style={{ height: "100px", float: "left", margin: "1px" }}
-              />
-     
-              <p
-                style={{
-                  fontSize: "25px",
-                  margin: "4px",
-                  fontStyle: "Impact",
-                  fontWeight: "400",
-                  aligment: "left",
-                  color: "white",
-                  float: "left",
-                  textShadow: "2px 2px 4px #000000",
-                }}
-              >
-                {name} <br />
-                {level}
-              </p>
-              <div
-                style={{
-                  position: "absolute",
-                  float: "left",
-                  alligment: "center",
-                  paddingLeft: "19px",
-                  paddingTop: "15px"
-                }}
-              >
-               <Border
-                width="100"
-                height="100"
-                image1={levelIcon}
-                image2={prestigeIcon}
-                style={{ float: "left", zIndex: "-1", alligment:"left", marginTop: "2px"}}
-              />
-
-                <InputGroup>
-                  <Input
-                    name="battleTagInput"
-                    placeholder="Ex. battletag-1234"
-                    value={this.state.battleTagInput}
-                    onChange={this.handleChange}
+              <div class="container-fluid">
+                <div class="row">
+                  <div class="col-sm-1">
+                    <img
+                      src={icon}
+                      alt="icon"
+                      style={{ height: "100px", float: "left", margin: "1px" }}
+                    />
+                  </div>
+                  <div class="col-sm-1">
+                    <p
+                      style={{
+                        fontSize: "25px",
+                        margin: "4px",
+                        fontStyle: "Impact",
+                        fontWeight: "400",
+                        aligment: "left",
+                        color: "white",
+                        left: "10px",
+                        top: "1px",
+                        position: "absolute",
+                        textShadow: "2px 2px 4px #000000",
+                        textTransform: "uppercase"
+                      }}
+                    >
+                      {name}
+                    </p>
+                    <div col-sm-1 style={{ paddingTop: "20px" }}>
+                      <Border
+                        width="100"
+                        height="100"
+                        image1={levelIcon}
+                        image2={prestigeIcon}
+                        style={{
+                          marginTop: "30px",
+                          paddingTop: "40px"
+                        }}
+                      />
+                      <p
+                        style={{
+                          fontSize: "25px",
+                          margin: "4px",
+                          fontStyle: "Impact",
+                          fontWeight: "400",
+                          aligment: "left",
+                          color: "white",
+                          left: "48px",
+                          top: "5px",
+                          position: "absolute",
+                          textShadow: "2px 2px 4px #000000",
+                          textTransform: "uppercase"
+                        }}
+                      >
+                        <br />
+                        {level}
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    class="col-sm-6"
+                    style={{
+                      position: "absolute",
+                      float: "left",
+                      alligment: "center",
+                      paddingLeft: "19px",
+                      paddingTop: "15px"
+                    }}
                   />
-                  <InputGroupAddon addonType="prepend">
-                    <Button onClick={this.handleSearch}>Search</Button>
-                  </InputGroupAddon>
-                </InputGroup>
-                
+                  <div class="col-sm-3">
+                    <img
+                      src={ratingIcon}
+                      style={{ height: "100px", float: "left" }}
+                    />
+                  </div>
+                  <div class="col-sm-3">
+                    <InputGroup
+                      style={{ paddingTop: "35px", paddingLeft: "10px" }}
+                    >
+                      <Input
+                        name="battleTagInput"
+                        placeholder="Ex. battletag#1234"
+                        value={this.state.battleTagInput}
+                        onChange={this.handleChange}
+                      />
+                      <InputGroupAddon addonType="prepend">
+                        <Button onClick={this.handleSearch}>Search</Button>
+                      </InputGroupAddon>
+                    </InputGroup>
+                  </div>
+                </div>
               </div>
-             
-              <img
-                src={ratingIcon}
-                style={{ height: "100px", float: "left" }}
-              />
             </div>
 
             <div
@@ -181,7 +212,7 @@ class App extends React.Component {
               }}
             >
               <div class="row">
-                <div class="col-sm">
+                <div class="col-sm-10 col-md-offset-10">
                   <p>
                     Season 12 <br />
                     {rating}
