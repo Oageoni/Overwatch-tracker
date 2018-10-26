@@ -14,13 +14,38 @@ import {
   InputGroup,
   InputGroupAddon
 } from "reactstrap";
+import InputView from "./components/BattletagInput.js";
+import StatTable from "./components/StatTable.js";
+import EmptyView from "./views/BtagInputView";
+
+const SortTypes = {
+  name: "string",
+  winPercentage: "number",
+  gamesWon: "number",
+  timePlayed: "time",
+  eliminationsPerLife: "float",
+  weaponAccuracy: "number"
+};
+
+function parseTimes(time) {
+  let value = null;
+  if (time.match(/hours$/)) {
+    value = parseInt(time.replace(/ hours$/, "")) * 60;
+  }
+  if (time.match(/minutes$/)) {
+    value = parseInt(time.replace(/ minutes$/, ""));
+  }
+  return value;
+}
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      tila: "1",
+      tila: "name",
+      lastTila: "name",
       searchText: "",
+      asc: false,
       battleTag: props.battleTag || "Oageoni#2192",
       battleTagInput: props.battleTag || "Oageoni#2192"
     };
@@ -51,9 +76,17 @@ class App extends React.Component {
     this.props.owStats(this.state.battleTagInput);
   }
   handleClick(tila) {
-    this.setState({
-      tila: tila
-    });
+    if (this.state.lastTila == tila) {
+      this.setState({
+        tila: tila,
+        asc: !this.state.asc
+      });
+    } else {
+      this.setState({
+        tila: tila,
+        lastTila: tila
+      });
+    }
   }
 
   componentDidMount() {
@@ -62,17 +95,45 @@ class App extends React.Component {
   }
 
   sortWithKey(chars, key, asc = true) {
-    return chars.sort((a, b) => {
-      if (a[key] < b[key]) return asc ? -1 : 1;
-      if (a[key] > b[key]) return asc ? 1 : -1;
-    });
+    console.log(key, SortTypes[key]);
+    if (SortTypes[key] == "string") {
+      return chars.sort((a, b) => {
+        if (a[key] < b[key]) return asc ? 1 : -1;
+        if (a[key] > b[key]) return asc ? -1 : 1;
+      });
+    }
+    if (SortTypes[key] == "number") {
+      return chars.sort((a, b) => {
+        let na = parseInt(a[key]);
+        let nb = parseInt(b[key]);
+        if (na < nb) return asc ? -1 : 1;
+        if (na > nb) return asc ? 1 : -1;
+      });
+    }
+    if (SortTypes[key] == "float") {
+      return chars.sort((a, b) => {
+        let na = parseFloat(a[key]);
+        let nb = parseFloat(b[key]);
+        if (na < nb) return asc ? -1 : 1;
+        if (na > nb) return asc ? 1 : -1;
+      });
+    }
+    if (SortTypes[key] == "time") {
+      return chars.sort((a, b) => {
+        let na = parseTimes(a[key]);
+        let nb = parseTimes(b[key]);
+
+        if (na < nb) return asc ? -1 : 1;
+        if (na > nb) return asc ? 1 : -1;
+      });
+    }
   }
 
   render() {
     const { owStat, dvaStat } = this.props;
 
     if (!owStat || !dvaStat) {
-      return null;
+      return <EmptyView />;
     } else {
       const levelIcon = owStat.levelIcon;
       const prestigeIcon = owStat.prestigeIcon;
@@ -82,14 +143,6 @@ class App extends React.Component {
       const ratingIcon = owStat.ratingIcon;
       const rating = owStat.rating;
 
-      /*       let award = [];
-      Object.keys(owStat.competitiveStats.awards).forEach(allMedals => {
-        award.push({
-          name: allMedals,
-          ...owStat.competitiveStats.awards[allMedals]
-        });
-      });
-      console.log(award); */
       let chars = [];
       if (dvaStat.competitiveStats && dvaStat.competitiveStats.topHeroes) {
         Object.keys(dvaStat.competitiveStats.topHeroes).forEach(charName => {
@@ -100,7 +153,7 @@ class App extends React.Component {
         });
       }
 
-      this.sortWithKey(chars, this.state.tila);
+      this.sortWithKey(chars, this.state.tila, this.state.asc);
       return (
         <div className="background">
           <div className="App">
@@ -173,47 +226,36 @@ class App extends React.Component {
                       paddingTop: "15px"
                     }}
                   />
-                  <div class="col-sm-3">
+                  <div class="col-sm-3" style={{ paddingTop: "20px" }}>
                     <img
                       src={ratingIcon}
                       style={{ height: "100px", float: "left" }}
                     />
                   </div>
                   <div class="col-sm-6">
-                    <InputGroup
-                      style={{ paddingTop: "35px", paddingLeft: "10px", width: "400px" }}
-                    >
-                      <Input
-                        name="battleTagInput"
-                        placeholder="Ex. battletag#1234"
-                        value={this.state.battleTagInput}
-                        onChange={this.handleChange}
-                      />
-                      <InputGroupAddon addonType="prepend">
-                        <Button onClick={this.handleSearch}>Search</Button>
-                      </InputGroupAddon>
-                    </InputGroup>
+                    <InputView />
                   </div>
                 </div>
               </div>
             </div>
 
-            <div
-              class="container-fluid"
-              style={{
-                fontSize: "50px",
-                fontStyle: "Impact",
-                fontWeight: "400",
-                alligment: "middle",
-                color: "white",
-                float: "middle",
-                margin: "10px",
-                textShadow: "2px 2px 4px #000000"
-              }}
-            >
-              <div class="row">
-                <div class="col-sm-10 col-md-offset-12" >
-                  <p style={{paddingLeft:"150px"}}>
+            <div className="container-fluid">
+              <div className="row">
+                <div class="col-sm-10 col-md-offset-12">
+                  <p
+                    style={{
+                      paddingLeft: "150px",
+                      fontSize: "50px",
+                      fontStyle: "Impact",
+                      fontWeight: "400",
+                      alligment: "middle",
+                      color: "white",
+                      float: "middle",
+                      margin: "10px",
+                      textShadow: "2px 2px 4px #000000",
+                      zIndex: "-1"
+                    }}
+                  >
                     Season 12 <br />
                     {rating}
                     <br />
@@ -238,81 +280,7 @@ class App extends React.Component {
             </div> */}
 
             <div>
-              <table
-                style={{
-                  fontSize: "20px",
-                  fontStyle: "Impact",
-                  fontWeight: "300",
-                  alligment: "left",
-                  textAlign: "center",
-                  color: "white",
-                  float: "left",
-                  textShadow: "2px 2px 4px #000000",
-                  textTransform: "uppercase"
-                }}
-              >
-                <thead>
-                  <tr>
-                    <th>
-                      <Button onClick={e => this.handleClick("name")}>
-                        Hero
-                      </Button>
-                    </th>
-                    <th>
-                      <Button onClick={e => this.handleClick("win precentage")}>
-                        Win precentage
-                      </Button>
-                    </th>
-                    <th>
-                      <Button onClick={e => this.handleClick("games won")}>
-                        Games won
-                      </Button>
-                    </th>
-                    <th>
-                      <Button onClick={e => this.handleClick("time played")}>
-                        Time played
-                      </Button>
-                    </th>
-                    <th>
-                      <Button
-                        onClick={e => this.handleClick("eliminations per life")}
-                      >
-                        Eliminations per life
-                      </Button>
-                    </th>
-                    <th>
-                      <Button
-                        onClick={e => this.handleClick("weapon accuracy")}
-                      >
-                        Weapon accuracy (%)
-                      </Button>
-                    </th>
-                  </tr>
-                </thead>
-
-                <tbody>
-                  {chars.map((char, index) => {
-                    return (
-                      <tr key={index}>
-                        <td style={{ textAlign: "center" }}>{char.name}</td>
-                        <td style={{ textAlign: "center" }}>
-                          {char.winPercentage}
-                        </td>
-                        <td style={{ textAlign: "center" }}>{char.gamesWon}</td>
-                        <td style={{ textAlign: "center" }}>
-                          {char.timePlayed}
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {char.eliminationsPerLife}
-                        </td>
-                        <td style={{ textAlign: "center" }}>
-                          {char.weaponAccuracy}
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+              <StatTable chars={chars} onSort={this.handleClick} />
             </div>
           </div>
         </div>
