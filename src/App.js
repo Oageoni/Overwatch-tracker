@@ -17,6 +17,7 @@ import {
 import InputView from "./components/BattletagInput.js";
 import StatTable from "./components/StatTable.js";
 import EmptyView from "./views/BtagInputView";
+import Tabs from "./components/tabs";
 
 const SortTypes = {
   name: "string",
@@ -280,7 +281,11 @@ class App extends React.Component {
             </div> */}
 
             <div>
-              <StatTable chars={chars} onSort={this.handleClick} />
+              <StatTable
+                chars={chars}
+                onSort={this.handleClick}
+                active={this.state.tila}
+              />
             </div>
           </div>
         </div>
