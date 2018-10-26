@@ -179,9 +179,9 @@ class App extends React.Component {
                       style={{ height: "100px", float: "left" }}
                     />
                   </div>
-                  <div class="col-sm-3">
+                  <div class="col-sm-6">
                     <InputGroup
-                      style={{ paddingTop: "35px", paddingLeft: "10px" }}
+                      style={{ paddingTop: "35px", paddingLeft: "10px", width: "400px" }}
                     >
                       <Input
                         name="battleTagInput"
@@ -212,8 +212,8 @@ class App extends React.Component {
               }}
             >
               <div class="row">
-                <div class="col-sm-10 col-md-offset-10">
-                  <p>
+                <div class="col-sm-10 col-md-offset-12" >
+                  <p style={{paddingLeft:"150px"}}>
                     Season 12 <br />
                     {rating}
                     <br />
