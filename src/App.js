@@ -186,7 +186,7 @@ class App extends React.Component {
                     >
                       {name}
                     </p>
-                    <div col-sm-1 style={{ paddingTop: "20px" }}>
+                    <div col-sm-6 style={{ paddingTop: "20px" }}>
                       <Border
                         width="100"
                         height="100"
@@ -194,9 +194,11 @@ class App extends React.Component {
                         image2={prestigeIcon}
                         style={{
                           marginTop: "30px",
-                          paddingTop: "40px"
+                          paddingTop: "40px",
+                          position: "absolute",
                         }}
                       />
+                      
                       <p
                         style={{
                           fontSize: "25px",
@@ -205,16 +207,18 @@ class App extends React.Component {
                           fontWeight: "400",
                           aligment: "left",
                           color: "white",
-                          left: "48px",
+                          left: "40%",
                           top: "5px",
                           position: "absolute",
                           textShadow: "2px 2px 4px #000000",
-                          textTransform: "uppercase"
+                          textTransform: "uppercase",
+                          zIndex: "-1",
                         }}
                       >
                         <br />
                         {level}
                       </p>
+                     
                     </div>
                   </div>
                   <div
@@ -264,23 +268,10 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            {/*      <div>
-              <FormGroup>
-                <Label for="Sort by">Sort by...</Label>
-                <Input
-                  name="tila"
-                  type="select"
-                  value={this.state.tila}
-                  onChange={this.handleChange}
-                >
-                  <option value="name">Name</option>
-                  <option value="winPrecentage">Win precentage</option>
-                  <option value="timePlayed">Time played</option>
-                </Input>
-              </FormGroup>
-            </div> */}
+        
 
             <div>
+             <Tabs />
               <StatTable
                 chars={chars}
                 onSort={this.handleClick}

@@ -20,7 +20,7 @@ export default class Tabs extends React.Component {
 
     this.toggle = this.toggle.bind(this);
     this.state = {
-      activeTab: "1"
+      activeTab: "Competitive"
     };
   }
 
@@ -37,22 +37,22 @@ export default class Tabs extends React.Component {
         <Nav tabs>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "1" })}
+              className={classnames({ active: this.state.activeTab === "Competitive" })}
               onClick={() => {
-                this.toggle("1");
+                this.toggle("Competitive");
               }}
             >
-              Tab1
+              Competitive
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "2" })}
+              className={classnames({ active: this.state.activeTab === "QuickPlay" })}
               onClick={() => {
-                this.toggle("2");
+                this.toggle("QuickPlay");
               }}
             >
-              Moar Tabs
+              Quick Play
             </NavLink>
           </NavItem>
         </Nav>
