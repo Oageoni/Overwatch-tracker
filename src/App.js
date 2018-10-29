@@ -202,7 +202,7 @@ class App extends React.Component {
                     >
                       {name}
                     </p>
-                    <div col-sm-1 style={{ paddingTop: "20px" }}>
+                    <div col-sm-6 style={{ paddingTop: "20px" }}>
                       <Border
                         width="100"
                         height="100"
@@ -210,9 +210,11 @@ class App extends React.Component {
                         image2={prestigeIcon}
                         style={{
                           marginTop: "30px",
-                          paddingTop: "40px"
+                          paddingTop: "40px",
+                          position: "absolute"
                         }}
                       />
+
                       <p
                         style={{
                           fontSize: "25px",
@@ -221,11 +223,12 @@ class App extends React.Component {
                           fontWeight: "400",
                           aligment: "left",
                           color: "white",
-                          left: "48px",
+                          left: "40%",
                           top: "5px",
                           position: "absolute",
                           textShadow: "2px 2px 4px #000000",
-                          textTransform: "uppercase"
+                          textTransform: "uppercase",
+                          zIndex: "-1"
                         }}
                       >
                         <br />
