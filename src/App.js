@@ -18,6 +18,7 @@ import InputView from "./components/BattletagInput.js";
 import StatTable from "./components/StatTable.js";
 import EmptyView from "./views/BtagInputView";
 import Tabs from "./components/tabs";
+import QpStatTable from "./components/QpStatTable";
 
 const SortTypes = {
   name: "string",
@@ -48,11 +49,13 @@ class App extends React.Component {
       searchText: "",
       asc: false,
       battleTag: props.battleTag || "Oageoni#2192",
-      battleTagInput: props.battleTag || "Oageoni#2192"
+      battleTagInput: props.battleTag || "Oageoni#2192",
+      tab: 0
     };
     this.handleChange = this.handleChange.bind(this);
     this.handleClick = this.handleClick.bind(this);
     this.handleSearch = this.handleSearch.bind(this);
+    this.handleTabChange = this.handleTabChange.bind(this);
   }
   static getDerivedStateFromProps(props, state) {
     if (state.battleTag !== props.battleTag) {
@@ -88,6 +91,10 @@ class App extends React.Component {
         lastTila: tila
       });
     }
+  }
+
+  handleTabChange(activeTab) {
+    this.setState({ tab: activeTab });
   }
 
   componentDidMount() {
@@ -153,7 +160,16 @@ class App extends React.Component {
           });
         });
       }
-
+      let qpChars = [];
+      if (dvaStat.quickPlayStats && dvaStat.quickPlayStats.topHeroes) {
+        Object.keys(dvaStat.quickPlayStats.topHeroes).forEach(charName => {
+          qpChars.push({
+            name: charName,
+            ...dvaStat.quickPlayStats.topHeroes[charName]
+          });
+        });
+      }
+      this.sortWithKey(qpChars, this.state.tila, this.state.asc);
       this.sortWithKey(chars, this.state.tila, this.state.asc);
       return (
         <div className="background">
@@ -264,28 +280,22 @@ class App extends React.Component {
                 </div>
               </div>
             </div>
-            {/*      <div>
-              <FormGroup>
-                <Label for="Sort by">Sort by...</Label>
-                <Input
-                  name="tila"
-                  type="select"
-                  value={this.state.tila}
-                  onChange={this.handleChange}
-                >
-                  <option value="name">Name</option>
-                  <option value="winPrecentage">Win precentage</option>
-                  <option value="timePlayed">Time played</option>
-                </Input>
-              </FormGroup>
-            </div> */}
 
             <div>
-              <StatTable
-                chars={chars}
-                onSort={this.handleClick}
-                active={this.state.tila}
-              />
+              <Tabs onChange={this.handleTabChange} selected={this.state.tab} />
+              {this.state.tab === 0 ? (
+                <StatTable
+                  chars={chars}
+                  onSort={this.handleClick}
+                  active={this.state.tila}
+                />
+              ) : (
+                <QpStatTable
+                  chars={qpChars}
+                  onSort={this.handleClick}
+                  active={this.state.tila}
+                />
+              )}
             </div>
           </div>
         </div>

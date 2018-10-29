@@ -15,7 +15,8 @@ export default (
     battleTag: "",
     owStat: null,
     dvaStat: null,
-    qpStat: null
+    qpStat: null,
+    activeTab: "1"
   },
   { type, value, isLoading, error }
 ) => {
@@ -29,14 +30,16 @@ export default (
     case ACTION_TYPES.DVA_STATS:
       return Object.assign({}, state, {
         dvaStat: value,
-        isLoading: false
+        isLoading: false,
+        activeTab: "1"
       });
 
     case ACTION_TYPES.QP_STATS:
       return Object.assign({}, state, {
-        qpStat: value,
-        isLoading: false
-      })
+        dvaStat: value,
+        isLoading: false,
+        activeTab: "2"
+      });
 
     case ACTION_TYPES.APPLICATION_ERROR:
       return Object.assign({}, state, {

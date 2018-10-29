@@ -27,7 +27,6 @@ export const owStats = battleTag => distpatch => {
         distpatch({ type: TYPES.APPLICATION_ERROR, error });
       });
   }
-  
 };
 export const dvaStats = battleTag => distpatch => {
   if (battleTag && battleTag.length > 0) {
@@ -58,7 +57,6 @@ export const dvaStats = battleTag => distpatch => {
         });
       });
   }
-  
 };
 
 export const qpStats = battleTag => distpatch => {
@@ -79,7 +77,7 @@ export const qpStats = battleTag => distpatch => {
       })
 
       .then(json => {
-        distpatch({ type: TYPES.QP_STATS, value: json });
+        distpatch({ type: TYPES.QP_STATS, value: json, activeTab: "2" });
       })
 
       .catch(error => {
@@ -90,6 +88,4 @@ export const qpStats = battleTag => distpatch => {
         });
       });
   }
-  
 };
-

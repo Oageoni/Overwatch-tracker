@@ -13,6 +13,7 @@ import {
   Col
 } from "reactstrap";
 import classnames from "classnames";
+import actions from "../actions";
 
 export default class Tabs extends React.Component {
   constructor(props) {
@@ -34,61 +35,30 @@ export default class Tabs extends React.Component {
   render() {
     return (
       <div>
-        <Nav tabs>
+        <Nav tabs activeStyle={{ color: "red" }}>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "1" })}
+              className={classnames({ active: this.props.selected === 0 })}
               onClick={() => {
-                this.toggle("1");
+                this.props.onChange(0);
+                return { color: "rgb(167, 204, 240)" };
               }}
             >
-              Tab1
+              Competitive
             </NavLink>
           </NavItem>
           <NavItem>
             <NavLink
-              className={classnames({ active: this.state.activeTab === "2" })}
+              className={classnames({ active: this.props.selected === 1 })}
               onClick={() => {
-                this.toggle("2");
+                this.props.onChange(1);
+                return { color: "info" };
               }}
             >
-              Moar Tabs
+              Quick play
             </NavLink>
           </NavItem>
         </Nav>
-        <TabContent activeTab={this.state.activeTab}>
-          <TabPane tabId="1">
-            <Row>
-              <Col sm="12">
-                <h4>Tab 1 Contents</h4>
-              </Col>
-            </Row>
-          </TabPane>
-          <TabPane tabId="2">
-            <Row>
-              <Col sm="6">
-                <Card body>
-                  <CardTitle>Special Title Treatment</CardTitle>
-                  <CardText>
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </CardText>
-                  <Button>Go somewhere</Button>
-                </Card>
-              </Col>
-              <Col sm="6">
-                <Card body>
-                  <CardTitle>Special Title Treatment</CardTitle>
-                  <CardText>
-                    With supporting text below as a natural lead-in to
-                    additional content.
-                  </CardText>
-                  <Button>Go somewhere</Button>
-                </Card>
-              </Col>
-            </Row>
-          </TabPane>
-        </TabContent>
       </div>
     );
   }
