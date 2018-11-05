@@ -16,7 +16,7 @@ html {
 
 .background {
   text-align: center;
-
+  z-index: -2;
   filter: blur("10px");
   background-repeat: no-repeat;
   background-size: cover;
@@ -24,6 +24,18 @@ html {
   height: 100vw;
   background: url("https://www.custompcreview.com/wp-content/uploads/2015/11/dorado-screenshot-001.23b2m.jpg");
   width: 100vw;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-image: linear-gradient(to bottom right, #002f4b, #000000);
+    opacity: 0.8;
+    z-index: -1;
+  }
 }
 
 .App {
@@ -56,19 +68,6 @@ html {
   align-items: "middle";
   position: "absolute";
   left: 500px;
-}
-
-table {
-  border-collapse: collapse;
-  width: 100%;
-  font-size: "30px";
-  font-style: "Impact";
-  font-weight: "200";
-  align-items: "left";
-  color: "white";
-  float: "left";
-  text-shadow: "2px 2px 4px #000000";
-  background-color: rgba(0, 0, 0, 0.2);
 }
 
 tr:nth-child(even) {

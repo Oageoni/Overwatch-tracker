@@ -35,13 +35,12 @@ export default class Tabs extends React.Component {
   render() {
     return (
       <div>
-        <Nav tabs activeStyle={{ color: "red" }}>
+        <Nav tabs>
           <NavItem>
             <NavLink
               className={classnames({ active: this.props.selected === 0 })}
               onClick={() => {
                 this.props.onChange(0);
-                return { color: "rgb(167, 204, 240)" };
               }}
             >
               Competitive
@@ -52,7 +51,6 @@ export default class Tabs extends React.Component {
               className={classnames({ active: this.props.selected === 1 })}
               onClick={() => {
                 this.props.onChange(1);
-                return { color: "info" };
               }}
             >
               Quick play

@@ -34,7 +34,6 @@ class InputView extends React.Component {
   }
   render() {
     return (
-      
       <InputGroup
         style={{ paddingTop: "35px", paddingLeft: "10px", width: "400px" }}
       >
@@ -45,10 +44,15 @@ class InputView extends React.Component {
           onChange={this.handleChange}
         />
         <InputGroupAddon addonType="prepend">
-          <Button onClick={this.handleSearch}>Search</Button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onClick={this.handleSearch}
+          >
+            Search
+          </button>
         </InputGroupAddon>
       </InputGroup>
-      
     );
   }
 }

@@ -223,7 +223,7 @@ class App extends React.Component {
                           fontWeight: "400",
                           aligment: "left",
                           color: "white",
-                          left: "40%",
+                          left: "38%",
                           top: "5px",
                           position: "absolute",
                           textShadow: "2px 2px 4px #000000",
@@ -276,7 +276,7 @@ class App extends React.Component {
                       zIndex: "-1"
                     }}
                   >
-                    Season 12 <br />
+                    Season 13 <br />
                     {rating}
                     <br />
                   </p>

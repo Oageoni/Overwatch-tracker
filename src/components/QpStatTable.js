@@ -1,7 +1,7 @@
 import React from "react";
 import { Button } from "reactstrap";
 
-class StatTable extends React.Component {
+class QpStatTable extends React.Component {
   constructor(props) {
     super(props);
     this.isActive = this.isActive.bind(this);
@@ -101,4 +101,4 @@ class StatTable extends React.Component {
   }
 }
 
-export default StatTable;
+export default QpStatTable;
